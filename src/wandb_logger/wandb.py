@@ -15,8 +15,10 @@ class WanDBWriter:
             wandb.login(key="30146604108f7b863edd5aa8041503fb9c0196d3")
 
             wandb.init(
-                project="llama",
+                project="dcgan",
+                reinit=True
             )
+
             self.wandb = wandb
 
         except ImportError:
