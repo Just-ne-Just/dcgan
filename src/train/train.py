@@ -120,7 +120,7 @@ def train(num_epochs, dataloader, model: DCGAN, g_opt, d_opt, device, log_step=5
             if (iters % 500 == 0) or ((epoch == num_epochs - 1) and (i == len(dataloader) - 1)):
                 writer.set_step(iters + start_step)
                 with torch.no_grad():
-                    fake = model.generate(fixed_noise[:5, ...]).detach().cpu()
+                    fake = model.generate(fixed_noise[:5, ...]).detach().cpu().numpy()
 
                 images = [PIL.Image.fromarray(image) for image in fake]
                 writer.add_images("example_images", images)
