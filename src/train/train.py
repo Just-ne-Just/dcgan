@@ -1,6 +1,5 @@
 import torch
 from torch.utils.data import DataLoader
-from src.model.utils import create_mask
 from timeit import default_timer as timer
 from tqdm.notebook import tqdm
 from itertools import repeat
@@ -8,8 +7,9 @@ from src.wandb_logger.wandb import WanDBWriter
 from torch import Tensor
 from src.model.dcgan import DCGAN
 import torch.nn as nn
-import torchvision.utils as vutils
 import PIL
+
+# legal reference: https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html
 
 def inf_loop(data_loader):
     """wrapper function for endless data loader."""
