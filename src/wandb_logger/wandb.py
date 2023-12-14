@@ -16,6 +16,7 @@ class WanDBWriter:
 
             wandb.init(
                 project="dcgan",
+                name="dcgan experiment",
                 reinit=True
             )
 
