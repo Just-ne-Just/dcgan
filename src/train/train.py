@@ -122,6 +122,6 @@ def train(num_epochs, dataloader, model: DCGAN, g_opt, d_opt, device, log_step=5
                 with torch.no_grad():
                     fake = model.generate(fixed_noise[:5, :, :, :]).detach().cpu().numpy()
 
-                images = [image.reshape(image.shape[1], image.shape[2], image.shape[0]) for image in fake]
+                images = [PIL.Image.fromarray(image.reshape(image.shape[1], image.shape[2], image.shape[0]), 'RGB') for image in fake]
                 writer.add_images("example_images", images)
             iters += 1
