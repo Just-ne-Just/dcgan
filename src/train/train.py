@@ -43,6 +43,16 @@ def get_grad_norm(model, norm_type=2):
             norm_type,
         )
         return total_norm.item()
+
+
+def normalize(arr, t_min, t_max):
+    norm_arr = []
+    diff = t_max - t_min
+    diff_arr = max(arr) - min(arr)    
+    for i in arr:
+        temp = (((i - min(arr)) * diff) / diff_arr) + t_min
+        norm_arr.append(temp)
+    return norm_arr
         
 
 def train(num_epochs, dataloader, model: DCGAN, g_opt, d_opt, device, log_step=50, start_step=0):
@@ -121,7 +131,11 @@ def train(num_epochs, dataloader, model: DCGAN, g_opt, d_opt, device, log_step=5
                 writer.set_step(iters + start_step)
                 with torch.no_grad():
                     fake = model.generate(fixed_noise[:5, :, :, :]).detach().cpu().numpy()
+                
+                images = []
+                for image in fake:
+                    image = (normalize(image.reshape(image.shape[1], image.shape[2], image.shape[0]), 0, 1) * 255).astype('uint8')
+                    images.append(PIL.Image.fromarray(image, 'RGB'))
 
-                images = [PIL.Image.fromarray(image.reshape(image.shape[1], image.shape[2], image.shape[0]), 'RGB') for image in fake]
                 writer.add_images("example_images", images)
             iters += 1
