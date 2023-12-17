@@ -79,7 +79,8 @@ def eval(model, dataloader, device, fixed_noise, fid_metric, ssim_metric):
     real_imgs = torch.cat(real_imgs)
 
     constructed_imgs = torch.cat(constructed_imgs)
-    print(constructed_imgs.shape)
+    for z in constructed_imgs:
+        print(z.shape)
     constructed_imgs = normalize(constructed_imgs, 0, 1)
     constructed_imgs = torch.cat(constructed_imgs)
 
