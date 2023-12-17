@@ -71,10 +71,14 @@ def eval(model, dataloader, device, fixed_noise, fid_metric, ssim_metric):
             constructed_imgs.append(samples.detach())
             last_idx += b_size
 
+    real_imgs = torch.cat(real_imgs)
     real_imgs = normalize(real_imgs, 0, 1)
     real_imgs = torch.cat(real_imgs)
+
+    constructed_imgs = torch.cat(constructed_imgs)
     constructed_imgs = normalize(constructed_imgs, 0, 1)
     constructed_imgs = torch.cat(constructed_imgs)
+    
     fid = fid_metric.compute_metric(real_imgs.flatten(1), constructed_imgs.flatten(1)).cpu().numpy(),
     ssim = ssim_metric(real_imgs, constructed_imgs).item()
     return fid, ssim
