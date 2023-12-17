@@ -48,9 +48,9 @@ def get_grad_norm(model, norm_type=2):
 def normalize(arr, t_min, t_max):
     norm_arr = []
     diff = t_max - t_min
-    diff_arr = max(arr) - min(arr)    
+    diff_arr = arr.max() - arr.min()    
     for i in arr:
-        temp = (((i - min(arr)) * diff) / diff_arr) + t_min
+        temp = (((i - arr.min()) * diff) / diff_arr) + t_min
         norm_arr.append(temp)
     return norm_arr
 
@@ -78,7 +78,7 @@ def eval(model, dataloader, device, fixed_noise, fid_metric, ssim_metric):
     constructed_imgs = torch.cat(constructed_imgs)
     constructed_imgs = normalize(constructed_imgs, 0, 1)
     constructed_imgs = torch.cat(constructed_imgs)
-    
+
     fid = fid_metric.compute_metric(real_imgs.flatten(1), constructed_imgs.flatten(1)).cpu().numpy(),
     ssim = ssim_metric(real_imgs, constructed_imgs).item()
     return fid, ssim
