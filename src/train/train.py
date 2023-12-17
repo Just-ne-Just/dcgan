@@ -51,7 +51,7 @@ def normalize(arr, t_min, t_max):
     diff_arr = arr.max() - arr.min()    
     for i in arr:
         temp = (((i - arr.min()) * diff) / diff_arr) + t_min
-        norm_arr.append(temp)
+        norm_arr.append(temp.unsqueeze(0))
     return norm_arr
 
 
@@ -73,7 +73,7 @@ def eval(model, dataloader, device, fixed_noise, fid_metric, ssim_metric):
 
     print(len(real_imgs), real_imgs[0].shape)
     print(len(constructed_imgs), constructed_imgs[0].shape)
-    
+
     real_imgs = torch.cat(real_imgs)
     real_imgs = normalize(real_imgs, 0, 1)
     real_imgs = torch.cat(real_imgs)
@@ -166,10 +166,10 @@ def train(num_epochs, dataloader, model: DCGAN, g_opt, d_opt, device, log_step=5
                 with torch.no_grad():
                     fake = model.generate(fixed_noise[:5, :, :, :]).detach().cpu().numpy()
                 
-                images = []
-                for image in fake:
-                    image = (normalize(image.reshape(image.shape[1], image.shape[2], image.shape[0]), 0, 1) * 255).astype('uint8')
-                    images.append(PIL.Image.fromarray(image, 'RGB'))
+                # images = []
+                # for image in fake:
+                #     image = (normalize(image.reshape(image.shape[1], image.shape[2], image.shape[0]), 0, 1) * 255).astype('uint8')
+                #     images.append(PIL.Image.fromarray(image, 'RGB'))
 
-                writer.add_images("example_images", images)
+                # writer.add_images("example_images", images)
             iters += 1
