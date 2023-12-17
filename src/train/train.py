@@ -65,7 +65,7 @@ def eval(model, dataloader, device, fixed_noise, fid_metric, ssim_metric):
         for data in tqdm(dataloader):
             real = data[0].to(device)
             b_size = real.size(0)
-            samples = model.generator(fixed_noise[last_idx:last_idx + b_size, :, :, :].unsqueeze(-1).unsqueeze(-1))
+            samples = model.generator(fixed_noise[last_idx:last_idx + b_size, ...].unsqueeze(-1).unsqueeze(-1))
 
             real_imgs.append(real.detach())
             constructed_imgs.append(samples.detach())
